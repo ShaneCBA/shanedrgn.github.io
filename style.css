@@ -4,6 +4,31 @@ body
   font-family: 'Segoe UI',sans-serif;
   margin: 0px;
 }
+.btn, .f_btn
+{
+  font-family: helvetica;
+  color: #FFFFFF;
+  display: inline-block;
+  margin:3px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.f_btn.r
+{
+  background-color: hsla(0, 100%, 46%, 1);
+}
+.f_btn.g
+{
+  background-color: hsla(152, 100%, 38%, 1);
+}
+
+.f_btn.b
+{
+  background-color: hsla(204, 100%, 38%, 1);
+}
+
 .f_btn
 {
   transform: translateY(-3px);
