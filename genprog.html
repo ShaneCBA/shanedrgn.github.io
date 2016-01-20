@@ -19,28 +19,55 @@
 <span id="block" style=""></span>
 </body>
 <script type="text/javascript">
-  var block = {element:document.getElementById("block"),gravity:"1",x:0,y:0,velX:0,velY:0};
+  var block = {jump:0,element:document.getElementById("block"),gravity:"1",x:0,y:0,velX:0,velY:0};
   block.velY = 20;
+  var charStr;
   setInterval(function(){
-    block.y += block.velY;
+    document.onkeypress = function(evt) {
+    evt = evt || window.event;
+    var charCode = evt.keyCode || evt.which;
+    charStr = String.fromCharCode(charCode);
+    };
+    if (charStr=="w" &&  block.jump < 2)
+    {
+      block.velY = 20;
+      block.jump += 1;
+    }
 
-    if (block.element.getBoundingClientRect().bottom<=0)
+    if (charStr=="a" &&  block.jump < 2)
     {
-      block.velY = 0;
-      block.y=0;
+      block.velX = -5;
     }
-    if (block.element.getBoundingClientRect().top>=window.innerHeight)
+
+    if (charStr=="d" &&  block.jump < 2)
     {
-      block.velY = 0;
-      block.y=0;
+      block.velX = 5;
     }
-    if (block.velY > 0)
+    block.y += block.velY;
+    block.x += block.velX;
+    if (block.y>0)
     {
       block.velY -= block.gravity;
     }
+    else
+    {
+      block.velY = 0;
+      block.y=0;
+      block.jump = 0;
+    }
+    if(block.velX>0)
+    {
+      block.velX -= .1;console.debug(block.velX);
+      block.element.innerText=block.velX;
+    }
+    else if(block.velX<0)
+    {
+      block.velX += .1;
+    }
+    charStr="";
     block.element.style.bottom=block.y.toString().concat("px");
     block.element.style.left=block.x.toString().concat("px");
 
-  }, 100);
+  }, 10);
 </script>
 </html>
