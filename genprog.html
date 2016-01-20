@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+  #block
+  {
+    box-sizing:border-box;
+    position:absolute;
+    display:block;
+    height:30px;
+    width:30px;
+    background-color:red;
+    outline:2px solid #AA0000;
+  }
+  </style>
+</head>
+<body>
+<span id="block" style=""></span>
+</body>
+<script type="text/javascript">
+  var block = {element:document.getElementById("block"),gravity:"1",x:0,y:0,velX:0,velY:0};
+  block.velY = 20;
+  setInterval(function(){
+    block.y += block.velY;
+
+    if (block.element.getBoundingClientRect().bottom<=0)
+    {
+      block.velY = 0;
+      block.y=0;
+    }
+    if (block.element.getBoundingClientRect().top>=window.innerHeight)
+    {
+      block.velY = 0;
+      block.y=0;
+    }
+    if (block.velY > 0)
+    {
+      block.velY -= block.gravity;
+    }
+    block.element.style.bottom=block.y.toString().concat("px");
+    block.element.style.left=block.x.toString().concat("px");
+
+  }, 100);
+</script>
+</html>
