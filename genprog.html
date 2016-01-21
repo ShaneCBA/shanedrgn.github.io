@@ -19,7 +19,15 @@
 <span id="block" style=""></span>
 </body>
 <script type="text/javascript">
-  var block = {jump:0,element:document.getElementById("block"),gravity:"1",x:0,y:0,velX:0,velY:0};
+  var block={
+    jump:0,
+    element:document.getElementById("block"),
+    gravity:"1",
+    x:0,
+    y:0,
+    velX:0,
+    velY:0,
+    move:NULL};
 
   block.velY = 20;
 
@@ -34,20 +42,6 @@
   },true);
 
   setInterval(function(){
-    /*document.onkeydown = function(evt)
-    {
-      evt = evt || window.event;
-      console.debug((evt.keyCode));
-      if (evt.charCode)
-      {
-        var charCode = evt.charCode;
-      }
-      else
-      {
-        var charCode = evt.keyCode || evt.which;
-      }
-      charStr = String.fromCharCode(charCode).toLowerCase();
-    };*/
     if (keyState[87] && block.jump < 2)
     {
       block.velY = 20;
