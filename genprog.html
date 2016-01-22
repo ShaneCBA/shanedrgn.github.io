@@ -17,8 +17,13 @@
 </head>
 <body>
 <span id="block" style=""></span>
+<span class="object" style="width:100%;background-color:rebeccapurple;height:20px;display:block;position:absolute;bottom:0px;left:0px;"></span>
+<span class="object" style="height:100%;background-color:rebeccapurple;width:20px;display:block;position:absolute;bottom:0px;left:0px;"></span>
 </body>
 <script type="text/javascript">
+  var objList = [];
+  document.getElementsByClassName("object").prototype.foreach(function(element, index, array) {objList.push(String.concat(element.getBoundingClientRect().top.toString(),",",element.getBoundingClientRect().left.toString(),",",element.getBoundingClientRect().bottom.toString(),",",element.getBoundingClientRect().right.toString()));});
+  console.debug(objList);
   var block={
     jump:0,
     element:document.getElementById("block"),
@@ -26,25 +31,55 @@
     x:0,
     y:0,
     velX:0,
-    velY:0};
+    velY:0,
+    move: function () {
+      if (this.y>0)
+      {
+        this.velY -= this.gravity;
+      }
+      else
+      {
+        this.velY = 0;
+        this.y=0;
+        this.jump = 0;
+      }
 
-  block.velY = 20;
+      if(this.velX>0)
+      {
+        this.velX = (Math.round(10*(this.velX -.1 ))/10);
+        this.element.innerText=this.velX;
+      }
+      else if(this.velX<0)
+      {
+        this.velX = (Math.round(10*(this.velX +.1 ))/10);
+        this.element.innerText=this.velX;
+      }
+    },
+    collide: function () {
+      
+    }
+    };
 
   var charStr;
 
   var keyState = {};    
-  window.addEventListener('keydown',function(e){
-      keyState[e.keyCode || e.which] = true;
-  },true);    
-  window.addEventListener('keyup',function(e){
-      keyState[e.keyCode || e.which] = false;
-  },true);
+  window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
+  window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
+
+  var renderWorld = setInterval(function(){
+    block.element.style.bottom=block.y.toString().concat("px");
+    block.element.style.left=block.x.toString().concat("px");
+  },1);
+
+  var velocity = setInterval(function(){
+    block.move();
+  },10);
 
   setInterval(function(){
-    if (keyState[87] && block.jump < 2)
+    if (keyState[87] && block.jump != 1)
     {
       block.velY = 20;
-      block.jump += 1;
+      block.jump = 1;
       charStr="";
     }
 
@@ -57,31 +92,9 @@
     {
       block.velX = 5;
     }
+
     block.y += block.velY;
     block.x += block.velX;
-    if (block.y>0)
-    {
-      block.velY -= block.gravity;
-    }
-    else
-    {
-      block.velY = 0;
-      block.y=0;
-      block.jump = 0;
-    }
-    if(block.velX>0)
-    {
-      block.velX = (Math.round(10*(block.velX -.1 ))/10);
-      block.element.innerText=block.velX;
-    }
-    else if(block.velX<0)
-    {
-      block.velX = (Math.round(10*(block.velX +.1 ))/10);
-      block.element.innerText=block.velX;
-    }
-    charStr="";
-    block.element.style.bottom=block.y.toString().concat("px");
-    block.element.style.left=block.x.toString().concat("px");
 
   }, 10);
 </script>
