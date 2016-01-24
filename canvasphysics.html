@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+  #engine_frame
+  {
+    border:1px solid #222;
+  }
+  </style>
+  <script>
+
+  </script>
+</head>
+<body>
+  <canvas id="engine_frame" width="600px" height="300px"></canvas>
+  <span id="mouseCoords">0,0</span>
+  <script type="text/javascript">
+  var keyState = {}; 
+  window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
+  window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
+
+  var mpiece;
+  var obstacles=[];
+
+  function start(){
+    mpiece = new object(world.canvas.width/2,0,20,20,"green",1);
+    obstacles.push(new object(40,world.canvas.height - 80,world.canvas.width-80,20,"red",0));
+    obstacles.push(new object(80,world.canvas.height - 160,world.canvas.width-160,20,"orange",0));
+    obstacles.push(new object(world.canvas.width - 20,0,20,world.canvas.height,"red",0));
+    world.start();
+  }
+  var world = {
+    canvas: document.getElementById('engine_frame'),
+    start: function() {
+      this.context = this.canvas.getContext("2d");
+      this.refresh = setInterval(updateWorld,10);
+    },
+    clear: function(){
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    } 
+  }
+  function object(x, y, width, height, color, gravity) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y; 
+    this.velX = 0;
+    this.velY = 0;
+    this.gravity = gravity;
+    this.onGround=false;
+    this.update = function(){
+      ctx = world.context;
+      ctx.fillStyle=color;
+      this.y += this.velY;
+      if (this.gravity != 0){
+        col = testCollide(mpiece);
+        if (col.y < col.x){
+          this.y -= col.y;
+        }
+        else
+        {
+          this.x -= col.x;
+        }
+        if (this.velY < 0){
+          this.onGround = false;
+        }
+      }
+      if (this.velY < 20){
+        this.velY += this.gravity/2;
+      }
+      if (col.y > 0){
+        this.velY = 0;
+        this.onGround = true;
+      }
+      document.getElementById('mouseCoords').innerHTML = mpiece.x+", "+mpiece.y;
+      ctx.fillRect(this.x,this.y,this.width,this.height);
+    }
+  }
+  function testCollide(object){
+    x1 = object.x;
+    y1 = object.y;
+    x2 = object.x+object.width;
+    y2 = object.y+object.height;
+    var ychange = 0;
+    var xchange = 0;
+    for (i = 0; i < obstacles.length; i++){
+      oX1 = obstacles[i].x;
+      oY1 = obstacles[i].y;
+      oX2 = obstacles[i].x + obstacles[i].width;
+      oY2 = obstacles[i].y + obstacles[i].height;
+      if (oX1 < x1 && oY1 < y1 && oX1 > x2){
+        xchange += x1-oX1;
+        ychange += y1-oY1;
+      }
+      if (oX1 < x2 && oY1 < y2 && oX2 > x1 && oY2 > y2){
+        xchange += x2-oX1;
+        ychange += y2-oY1;
+      }
+      if (oX1 < x1 && oY1 < y1 && oX1 > x2){
+        xchange += x1-oX1;
+        ychange += y1-oY1;
+      }
+    }
+    return {x:xchange,y:ychange};
+  }
+  function updateWorld(){
+    testCollide(mpiece);
+    world.clear(); 
+    mpiece.update();
+    obstacles[0].update();
+    obstacles[1].update();
+    obstacles[2].update();
+  };
+  var getInput =  setInterval(function(){
+    if(keyState[87])//W
+    {
+      if (mpiece.onGround == true){
+        mpiece.velY = -10;
+        console.debug(mpiece.onGround)
+      }
+    }
+    if(keyState[65])//A
+    {
+      mpiece.x -= 5;
+    }
+    if(keyState[83])//S
+    {
+      //mpiece.y += 10;
+    }
+    if(keyState[68])//W
+    {
+      mpiece.x += 5;
+    }
+    //console.debug(keyState);
+  },10);
+  start();
+  </script>
+</body>
+</html>
