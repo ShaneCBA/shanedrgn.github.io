@@ -44,7 +44,7 @@
     this.width = width;
     this.height = height;
     this.x = x;
-    this.y = y; 
+    this.y = y;
     this.velX = 0;
     this.velY = 0;
     this.gravity = gravity;
@@ -73,6 +73,13 @@
         this.velY = 0;
         this.onGround = true;
       }
+      if (this.velX > 0) {
+        this.velX -= 1;
+      }
+      else if (this.velX < 0) {
+        this.velX += 1;
+      }
+      this.x += this.velX;
       document.getElementById('mouseCoords').innerHTML = mpiece.x+", "+mpiece.y;
       ctx.fillRect(this.x,this.y,this.width,this.height);
     }
@@ -97,9 +104,9 @@
         xchange += x2-oX1;
         ychange += y2-oY1;
       }
-      if (oX1 < x1 && oY1 < y1 && oX1 > x2){
+      if (oY2 > y1 && oY2 < y2 && oX2 > x2 && oX1 < x1){
         xchange += x1-oX1;
-        ychange += y1-oY1;
+        ychange += y1-oY2;
       }
     }
     return {x:xchange,y:ychange};
@@ -122,7 +129,7 @@
     }
     if(keyState[65])//A
     {
-      mpiece.x -= 5;
+      mpiece.velX = -5;
     }
     if(keyState[83])//S
     {
@@ -130,7 +137,7 @@
     }
     if(keyState[68])//W
     {
-      mpiece.x += 5;
+      mpiece.velX = 5;
     }
     //console.debug(keyState);
   },10);
