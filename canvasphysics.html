@@ -102,12 +102,12 @@
         object.velY = 0;
       }
       if (betweenY && (R > L2 && L < L2)){
-        xchange -= R - L2;
-        debug('r');
+        xchange += R - L2;
+        debug('L');
       }
       if (betweenY && (L < R2 && R > R2)){
-        xchange += R2 - L;
-        debug('l');
+        xchange -= R2 - L;
+        debug('R');
       }
     }
     return {x:xchange,y:ychange};
