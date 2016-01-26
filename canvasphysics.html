@@ -14,12 +14,13 @@
 </head>
 <body>
   <canvas id="engine_frame" width="600px" height="300px"></canvas>
-  <span id="mouseCoords">0,0</span>
+  <span id="debug">0</span>
   <script type="text/javascript">
   var keyState = {}; 
+  var fps = 10;
   window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
   window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
-
+  function debug(thing){document.getElementById("debug").innerHTML = thing;}
   var mpiece;
   var obstacles=[];
 
@@ -28,13 +29,14 @@
     obstacles.push(new object(40,world.canvas.height - 80,world.canvas.width-80,20,"red",0));
     obstacles.push(new object(80,world.canvas.height - 160,world.canvas.width-160,20,"orange",0));
     obstacles.push(new object(world.canvas.width - 20,0,20,world.canvas.height,"red",0));
+    obstacles.push(new object(20,0,20,world.canvas.height,"red",0));
     world.start();
   }
   var world = {
     canvas: document.getElementById('engine_frame'),
     start: function() {
       this.context = this.canvas.getContext("2d");
-      this.refresh = setInterval(updateWorld,10);
+      this.refresh = setInterval(updateWorld,fps);
     },
     clear: function(){
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -55,13 +57,8 @@
       this.y += this.velY;
       if (this.gravity != 0){
         col = testCollide(mpiece);
-        if (col.y < col.x){
-          this.y -= col.y;
-        }
-        else
-        {
-          this.x -= col.x;
-        }
+        this.y -= col.y;
+        this.x -= col.x;
         if (this.velY < 0){
           this.onGround = false;
         }
@@ -80,7 +77,6 @@
         this.velX += 1;
       }
       this.x += this.velX;
-      document.getElementById('mouseCoords').innerHTML = mpiece.x+", "+mpiece.y;
       ctx.fillRect(this.x,this.y,this.width,this.height);
     }
   }
@@ -96,17 +92,20 @@
       oY1 = obstacles[i].y;
       oX2 = obstacles[i].x + obstacles[i].width;
       oY2 = obstacles[i].y + obstacles[i].height;
-      if (oX1 < x1 && oY1 < y1 && oX1 > x2){
-        xchange += x1-oX1;
-        ychange += y1-oY1;
+      betweenX = (x2 > oX1 && x1 < oX2);
+      betweenY = (y2 > oY1 && y1 < oY2)
+      if (y2 > oY1 && betweenX && y1 < oY2 && y1 < oY1){//Bottom Top Detection
+        ychange += y2 - oY1;
       }
-      if (oX1 < x2 && oY1 < y2 && oX2 > x1 && oY2 > y2){
-        xchange += x2-oX1;
-        ychange += y2-oY1;
+      if (y1 < oY2 && y1 > oY1 && betweenX && y2 > oY2){
+        ychange -= oY2 - y1;
+        object.velY = 0;
       }
-      if (oY2 > y1 && oY2 < y2 && oX2 > x2 && oX1 < x1){
-        xchange += x1-oX1;
-        ychange += y1-oY2;
+      if (x2 > oX1 && betweenY && x1 < oX2 && x1 < oX1){//Bottom Top Detection
+        xchange += x2 - oX1;
+      }
+      if (x1 < oX2 && x1 > oX1 && betweenY && x2 > oX2){
+        xchange -= oX2 - x1;
       }
     }
     return {x:xchange,y:ychange};
@@ -118,13 +117,14 @@
     obstacles[0].update();
     obstacles[1].update();
     obstacles[2].update();
+    obstacles[3].update();
   };
   var getInput =  setInterval(function(){
     if(keyState[87])//W
     {
       if (mpiece.onGround == true){
         mpiece.velY = -10;
-        console.debug(mpiece.onGround)
+        //debug(mpiece.onGround)
       }
     }
     if(keyState[65])//A
