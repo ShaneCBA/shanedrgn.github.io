@@ -81,31 +81,31 @@
     }
   }
   function testCollide(object){
-    x1 = object.x;
-    y1 = object.y;
-    x2 = object.x+object.width;
-    y2 = object.y+object.height;
+    L = object.x;
+    T = object.y;
+    R = object.x+object.width;
+    B = object.y+object.height;
     var ychange = 0;
     var xchange = 0;
     for (i = 0; i < obstacles.length; i++){
-      oX1 = obstacles[i].x;
-      oY1 = obstacles[i].y;
-      oX2 = obstacles[i].x + obstacles[i].width;
-      oY2 = obstacles[i].y + obstacles[i].height;
-      betweenX = (x2 > oX1 && x1 < oX2);
-      betweenY = (y2 > oY1 && y1 < oY2)
-      if (y2 > oY1 && betweenX && y1 < oY2 && y1 < oY1){//Bottom Top Detection
-        ychange += y2 - oY1;
+      L2 = obstacles[i].x;
+      T2 = obstacles[i].y;
+      R2 = obstacles[i].x + obstacles[i].width;
+      B2 = obstacles[i].y + obstacles[i].height;
+      betweenX = (R > L2 && L < R2);
+      betweenY = (B > T2 && T < B2)
+      if (B > T2 && betweenX && T < B2 && T < T2){//Bottom Top Detection
+        ychange += B - T2;
       }
-      if (y1 < oY2 && y1 > oY1 && betweenX && y2 > oY2){
-        ychange -= oY2 - y1;
+      if (T < B2 && T > T2 && betweenX && B > B2){
+        ychange -= B2 - T;
         object.velY = 0;
       }
-      if (x2 > oX1 && betweenY && x1 < oX2 && x1 < oX1){//Bottom Top Detection
-        xchange += x2 - oX1;
+      if (R > L2 && betweenY && L < R2 && L < L2){//Bottom Top Detection
+        xchange += R - L2;
       }
-      if (x1 < oX2 && x1 > oX1 && betweenY && x2 > oX2){
-        xchange -= oX2 - x1;
+      if (L < R2 && L > L2 && betweenY && R > R2){
+        xchange -= R2 - L;
       }
     }
     return {x:xchange,y:ychange};
