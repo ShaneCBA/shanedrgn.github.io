@@ -92,12 +92,12 @@
       T2 = obstacles[i].y;
       R2 = obstacles[i].x + obstacles[i].width;
       B2 = obstacles[i].y + obstacles[i].height;
-      betweenX = (R > L2 && L < R2);
-      betweenY = (B > T2 && T < B2)
-      if (B > T2 && betweenX && T < B2 && T < T2){//Bottom Top Detection
+      betweenX = (L < R2 || R > L2);
+      betweenY = (B > T2 || T < B2);
+      if (betweenX && (B > T2 && T < T2)){//Bottom Top Detection
         ychange += B - T2;
       }
-      if (T < B2 && T > T2 && betweenX && B > B2){
+      if (betweenX && (T < B2 && B > B2)){
         ychange -= B2 - T;
         object.velY = 0;
       }
