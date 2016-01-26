@@ -101,12 +101,12 @@
         ychange -= B2 - T;
         object.velY = 0;
       }
-      if (R > L2 && betweenY && L < R2 && L < L2){//Bottom Top Detection
+      /*if (R > L2 && betweenY && L < R2 && L < L2){//Bottom Top Detection
         xchange += R - L2;
       }
       if (L < R2 && L > L2 && betweenY && R > R2){
         xchange -= R2 - L;
-      }
+      }*/
     }
     return {x:xchange,y:ychange};
   }
