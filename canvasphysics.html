@@ -97,15 +97,15 @@
       if (betweenX && (B > T2 && T < T2)){//Bottom Top Detection
         ychange += B - T2;
       }
-      if (betweenX && (T < B2 && B > B2)){
+      if (betweenX && (T < B2 && B > B2)){//Top Bottom Detection
         ychange -= B2 - T;
         object.velY = 0;
       }
-      if (betweenY && (R > L2 && L < L2)){//Bottom Top Detection
-        xchange += R - L2;
+      if (betweenY && (R > L2 && L < L2)){
+        xchange -= R - L2;
       }
       if (betweenY && (L < R2 && R > R2)){
-        xchange -= R2 - L;
+        xchange += R2 - L;
       }
     }
     return {x:xchange,y:ychange};
