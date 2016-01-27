@@ -17,7 +17,7 @@
   <span id="debug">0</span>
   <script type="text/javascript">
   var keyState = {}; 
-  var fps = 70;
+  var fps = 20;
   window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
   window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
   function debug(thing){document.getElementById("debug").innerHTML = thing;}
@@ -103,11 +103,12 @@
       }
       if (betweenY && (R > L2 && L < L2)){
         xchange += R - L2;
-        debug('L');
+        object.velX = 0;
       }
       if (betweenY && (L < R2 && R > R2)){
-        xchange -= R2 - L;
-        debug('R');
+        xchange += L - R2;
+        object.velX = 0;
+        debug(L - R2);
       }
     }
     return {x:xchange,y:ychange};
