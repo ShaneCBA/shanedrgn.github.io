@@ -16,22 +16,27 @@
   <canvas id="engine_frame" width="600px" height="300px"></canvas>
   <span id="debug">0</span>
   <script type="text/javascript">
-  var keyState = {}; 
+  function debug(thing){document.getElementById("debug").innerHTML = thing;}
+
   var fps = 20;
+
+  var keyState = {}; 
   window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
   window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
-  function debug(thing){document.getElementById("debug").innerHTML = thing;}
+
   var mpiece;
+
   var obstacles=[];
 
   function start(){
-    mpiece = new object(world.canvas.width/2,0,20,20,"green",1);
-    obstacles.push(new object(40,world.canvas.height - 80,world.canvas.width-80,20,"red",0));
-    obstacles.push(new object(80,world.canvas.height - 160,world.canvas.width-160,20,"orange",0));
-    obstacles.push(new object(world.canvas.width - 20,0,20,world.canvas.height,"red",0));
-    obstacles.push(new object(20,60,20,world.canvas.height-60,"red",0));
+    mpiece = new entity(world.canvas.width/2,0,20,20,"green",1);
+    obstacles.push(new object(40,world.canvas.height - 80,world.canvas.width-80,20,"red"));
+    obstacles.push(new object(80,world.canvas.height - 160,world.canvas.width-160,20,"orange"));
+    obstacles.push(new object(world.canvas.width - 20,0,20,world.canvas.height,"red"));
+    obstacles.push(new object(20,60,20,world.canvas.height-60,"red"));
     world.start();
   }
+
   var world = {
     canvas: document.getElementById('engine_frame'),
     start: function() {
@@ -42,11 +47,25 @@
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     } 
   }
-  function object(x, y, width, height, color, gravity) {
+
+  function object(x, y, width, height, color){
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
+    this.update = function() {
+      ctx = world.context;
+      ctx.fillStyle=color;
+      ctx.fillRect(this.x,this.y,this.width,this.height);
+    }
+  }
+
+  function entity(x, y, width, height, color, gravity) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+
     this.velX = 0;
     this.velY = 0;
     this.gravity = gravity;
@@ -54,7 +73,10 @@
     this.update = function(){
       ctx = world.context;
       ctx.fillStyle=color;
+
+      this.x += this.velX;
       this.y += this.velY;
+///Collision
       if (this.gravity != 0){
         col = testCollide(mpiece);
         this.y -= col.y;
@@ -63,28 +85,34 @@
           this.onGround = false;
         }
       }
-      if (this.velY < 20){
-        this.velY += this.gravity/2;
-      }
       if (col.y > 0){
         this.velY = 0;
         this.onGround = true;
       }
+///Velocity
+
+      if (this.velY < 20){
+        this.velY += this.gravity/2;
+      }
+
       if (this.velX > 0) {
         this.velX -= 1;
       }
+
       else if (this.velX < 0) {
         this.velX += 1;
       }
-      this.x += this.velX;
+
+///Draw Rectangle
       ctx.fillRect(this.x,this.y,this.width,this.height);
     }
   }
-  function testCollide(object){
-    L = object.x;
-    T = object.y;
-    R = object.x+object.width;
-    B = object.y+object.height;
+
+  function testCollide(entity){
+    L = entity.x;
+    T = entity.y;
+    R = entity.x+entity.width;
+    B = entity.y+entity.height;
     var ychange = 0;
     var xchange = 0;
     for (i = 0; i < obstacles.length; i++){
@@ -99,19 +127,20 @@
       }
       if (betweenX && (T < B2 && B > B2)){//Top Bottom Detection
         ychange -= B2 - T;
-        object.velY = 0;
+        entity.velY = 0;
       }
       if (betweenY && (R > L2 && L < L2) && !((B > T2 && T < T2) || (T < B2 && B > B2))){
         xchange += R - L2;
-        object.velX = 0;
+        //entity.velX = 0;
       }
       if (betweenY && (L < R2 && R > R2) && !((B > T2 && T < T2) || (T < B2 && B > B2))){
         xchange += L - R2;
-        object.velX = 0;
+        //entity.velX = 0;
       }
     }
     return {x:xchange,y:ychange};
   }
+
   function updateWorld(){
     testCollide(mpiece);
     world.clear(); 
@@ -120,7 +149,8 @@
     obstacles[1].update();
     obstacles[2].update();
     obstacles[3].update();
-  };
+  }
+
   var getInput =  setInterval(function(){
     if(keyState[87])//W
     {
@@ -143,6 +173,7 @@
     }
     //console.debug(keyState);
   },10);
+  
   start();
   </script>
 </body>
