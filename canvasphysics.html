@@ -101,14 +101,13 @@
         ychange -= B2 - T;
         object.velY = 0;
       }
-      if (betweenY && (R > L2 && L < L2)){
+      if (betweenY && (R > L2 && L < L2) && !((B > T2 && T < T2) || (T < B2 && B > B2))){
         xchange += R - L2;
         object.velX = 0;
       }
-      if (betweenY && (L < R2 && R > R2)){
+      if (betweenY && (L < R2 && R > R2) && !((B > T2 && T < T2) || (T < B2 && B > B2))){
         xchange += L - R2;
         object.velX = 0;
-        debug(L - R2);
       }
     }
     return {x:xchange,y:ychange};
