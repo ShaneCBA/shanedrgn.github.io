@@ -29,7 +29,7 @@
   var obstacles=[];
 
   function start(){
-    mpiece = new entity(world.canvas.width/2,0,20,20,"green",50);
+    mpiece = new entity(world.canvas.width/2,0,20,20,"green",10);
     obstacles.push(new object(40,world.canvas.height - 80,world.canvas.width-80,20,"red"));
     obstacles.push(new object(80,world.canvas.height - 160,world.canvas.width-160,20,"orange"));
     obstacles.push(new object(world.canvas.width - 20,0,20,world.canvas.height,"red"));
@@ -92,15 +92,15 @@
 ///Velocity
 
       if (this.velY < 20){
-        this.velY += .1*this.mass*0.0098;
+        this.velY += this.mass*9.8*0.001;
       }
 
       if (this.velX > 0) {
-        this.velX -= .5;
+        this.velX -= .05;
       }
 
       else if (this.velX < 0) {
-        this.velX += .5;
+        this.velX += .05;
       }
 
 ///Draw Rectangle
@@ -204,7 +204,7 @@
     if(keyState[87])//W
     {
       if (mpiece.onGround == true){
-        mpiece.velY = -3;
+        mpiece.velY = -5;
         //debug(mpiece.onGround)
       }
       //mpiece.velY = -2.5
