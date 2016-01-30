@@ -16,6 +16,7 @@
   <canvas id="engine_frame" width="600px" height="300px"></canvas>
   <span id="debug">0</span>
   <script type="text/javascript">
+
   function debug(thing){document.getElementById("debug").innerHTML = thing;}
 
   var RR = 1;
@@ -73,6 +74,7 @@
     this.update = function(){
       ctx = world.context;
       ctx.fillStyle=color;
+      this.velX = Math.round(this.velX*1000)/1000;
 
       this.x += this.velX;
       this.y += this.velY;
@@ -102,7 +104,6 @@
       else if (this.velX < 0) {
         this.velX += .05;
       }
-
 ///Draw Rectangle
       ctx.fillRect(this.x,this.y,this.width,this.height);
     }
