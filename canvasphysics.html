@@ -108,7 +108,10 @@
       ctx.fillRect(this.x,this.y,this.width,this.height);
     }
   }
-
+    L2 = obj2.x
+    T2 = obj2.y
+    R2 = obj2.x + obj2.width
+    B2 = obj2.y + obj2.height
   function testCollide(entity){
     L = entity.x;
     T = entity.y;
@@ -136,16 +139,13 @@
       }
       if (betweenX && T_B2 && !(R_L2 || L_R2)){//Top Bottom Detection
         ychange -= B2 - T;
-        entity.velY = 0;
       }
 
       if (betweenY && R_L2 && !(B_T2 || T_B2)){
         xchange += R - L2;
-        //entity.velX = 0;
       }
       if (betweenY && L_R2 && !(B_T2 || T_B2)){
         xchange += L - R2;
-        //entity.velX = 0;
       }
 
       if (R_L2 && B_T2){//TOPLEFT corner clip

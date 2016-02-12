@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Second Canvas Engine</title>
+  <style type="text/css">
+  *{
+    font-family: Arial;
+  }
+  </style>
+  <script type="text/javascript">
+
+  function debug(stuff){
+    document.getElementById("debug").value += stuff+"\n"
+  }
+
+    var keyState = {}; 
+    window.addEventListener('keydown',function(e){keyState[e.keyCode || e.which] = true;},true);    
+    window.addEventListener('keyup',function(e){keyState[e.keyCode || e.which] = false;},true);
+
+    function World(canvas){
+      var self = this;
+      this.init = function(){
+        this.objects = [];
+        this.canvas = document.getElementById(canvas);
+        this.context = this.canvas.getContext("2d");
+      }
+      this.start = function(){
+        self.interval = setInterval(this.redraw,10);
+      }
+      this.clear = function(){
+        self.context.fillStyle = "#34495e"
+        self.context.fillRect(0,0,self.canvas.width,self.canvas.height);
+      }
+      this.redraw = function(){
+        self.clear()
+        self.objects.forEach(function(obj){
+          obj.draw();
+        });
+      }
+      this.appendObject = function(newObject){
+        this.objects.push(newObject);
+        return this.objects[this.objects.length-1]
+      }
+      this.init();
+    }
+
+    function Object(x,y,width,height,color){
+      this.init = function() {
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.height = height;
+        this.width = width;
+        this.color = color;
+      }
+      this.draw = function(ctx){
+        ctx = world.context;
+        ctx.fillStyle=this.color
+        ctx.strokeStyle="#FFFFFF"
+        ctx.lineWidth   = 2;
+        ctx.fillRect(this.x,this.y,this.width,this.height);
+        ctx.strokeRect(this.x,this.y,this.width,this.height);
+      }
+      this.tellThing=function(){alert("yep");}
+
+      this.init();
+    }
+
+    function Obstacle(x,y,width,height,color){
+        this.init = function() {
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.height = height;
+        this.width = width;
+        this.color = color;
+      }
+
+      this.init();
+    }
+    Obstacle.prototype = new Object();
+
+    function Movable(x,y,width,height,color){
+      this.init = function() {
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.velX = 0.0;
+        this.velY = 0.0;
+        this.height = height;
+        this.width = width;
+        this.color = color;
+      }
+
+      this.init();
+    }
+    Movable.prototype = new Object();
+    function Player(x,y,width,height,color){
+      var self = this
+      this.init = function() {
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.height = height;
+        this.width = width;
+        this.color = color;
+      }
+      this.move = function(){
+        if (keyState[87]){
+          self.velY = -2;
+        }
+        if (keyState[83]){
+          self.velY = 2;
+        }
+        if (keyState[65]){
+          self.velX = -2;
+        }
+        if (keyState[68]){
+          self.velX = 2;
+        }
+
+        if (self.velX != 0){
+          self.velX = ((self.velX - .1*(Math.abs(self.velX)/self.velX)).toFixed(1))/1
+        }
+
+        if (self.velY != 0){
+          self.velY = ((self.velY - .1*(Math.abs(self.velY)/self.velY)).toFixed(1))/1
+        }
+
+        self.x = self.x + self.velX
+        self.y =  self.y +self.velY
+      }
+      this.init(); 
+    }
+    Player.prototype = new Movable();
+  </script>
+</head>
+<body>
+<canvas id="game" width="600" height="300" style="border:1px solid;"></canvas>
+<br><br>
+Debug:<br/>
+<textarea id="debug" style="width: 600px; height: 150px;"></textarea>
+<script type="text/javascript">
+    var asdf = "ayy";
+    var world = new World("game");
+    world.start();
+    var player = world.appendObject(new Player(10,10,30,30,"#ABCDEF"))
+    world.appendObject(new Obstacle(270,90,30,120,"#EEEEEE"))
+    var movement = setInterval(player.move,10);
+    </script>
+</body>
+</html>
