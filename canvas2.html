@@ -11,6 +11,7 @@
 
   function debug(stuff){
     document.getElementById("debug").value += stuff+"\n"
+    document.getElementById("debug").scrollTop = document.getElementById("debug").scrollHeight
   }
 
     var keyState = {}; 
@@ -25,16 +26,24 @@
         this.context = this.canvas.getContext("2d");
       }
       this.start = function(){
-        self.interval = setInterval(this.redraw,10);
+        self.drawObjects = setInterval(this.drawObjects,10);
+        self.moveObj = setInterval(this.moveObjects,10);
       }
       this.clear = function(){
         self.context.fillStyle = "#34495e"
         self.context.fillRect(0,0,self.canvas.width,self.canvas.height);
       }
-      this.redraw = function(){
+      this.drawObjects = function(){
         self.clear()
         self.objects.forEach(function(obj){
           obj.draw();
+        });
+      }
+      this.moveObjects = function(){
+        self.objects.forEach(function(obj){
+          if (typeof(obj.velX) !== 'undefined'){
+            obj.move(obj);
+          }
         });
       }
       this.appendObject = function(newObject){
@@ -45,6 +54,7 @@
     }
 
     function Object(x,y,width,height,color){
+      self = this
       this.init = function() {
         this.x = parseFloat(x);
         this.y = parseFloat(y);
@@ -56,12 +66,15 @@
         ctx = world.context;
         ctx.fillStyle=this.color
         ctx.strokeStyle="#FFFFFF"
-        ctx.lineWidth   = 2;
+        ctx.lineWidth  = 2;
         ctx.fillRect(this.x,this.y,this.width,this.height);
         ctx.strokeRect(this.x,this.y,this.width,this.height);
       }
-      this.tellThing=function(){alert("yep");}
-
+      this.isTouching = function(self,o){
+        if ((((o.x < self.x && self.x < (o.x + o.width)) || (o.x < (self.x + self.width) && (self.x + self.width) < (o.x + o.width)))) && (((o.y < self.y && self.y < (o.y + o.height)) || (o.y < (self.y + self.height) && (self.y + self.height) < (o.y + o.height))))) {
+          return  true
+        }
+      }
       this.init();
     }
 
@@ -79,6 +92,7 @@
     Obstacle.prototype = new Object();
 
     function Movable(x,y,width,height,color){
+      var self = this;
       this.init = function() {
         this.x = parseFloat(x);
         this.y = parseFloat(y);
@@ -88,10 +102,40 @@
         this.width = width;
         this.color = color;
       }
+      this.move = function(s) {
+        world.objects.forEach(function(obj){
+        s.x = s.x + s.velX
+        s.y =  s.y + s.velY 
+          if (!(obj instanceof Player)) {
+            if(s.isTouching(s,obj)){
+              var x2 = s.x + s.width;
+              var y2 = s.y + s.height;
 
+              var ox2 = obj.x + obj.width;
+              var oy2 = obj.y + obj.height;
+
+              if (Math.abs(s.x - ox2) < Math.abs(s.y - oy2)){
+                if(s.x > obj.x){s.x -= s.x - ox2;}
+              }
+              else{
+                if(s.y > obj.y){s.y -= s.y - oy2;}
+              }      
+
+              if (Math.abs(x2 - obj.x) < Math.abs(y2 - obj.y))
+              {
+                if (x2 < ox2){s.x += obj.x - x2;}
+              }
+              else{
+                if (y2 < oy2){s.y += obj.y - y2;}
+              } 
+            }
+          }
+        });
+      }
       this.init();
     }
     Movable.prototype = new Object();
+
     function Player(x,y,width,height,color){
       var self = this
       this.init = function() {
@@ -101,7 +145,7 @@
         this.width = width;
         this.color = color;
       }
-      this.move = function(){
+      this.testKeys = function(){
         if (keyState[87]){
           self.velY = -2;
         }
@@ -123,8 +167,6 @@
           self.velY = ((self.velY - .1*(Math.abs(self.velY)/self.velY)).toFixed(1))/1
         }
 
-        self.x = self.x + self.velX
-        self.y =  self.y +self.velY
       }
       this.init(); 
     }
@@ -142,7 +184,7 @@ Debug:<br/>
     world.start();
     var player = world.appendObject(new Player(10,10,30,30,"#ABCDEF"))
     world.appendObject(new Obstacle(270,90,30,120,"#EEEEEE"))
-    var movement = setInterval(player.move,10);
+    var movement = setInterval(player.testKeys,10);
     </script>
 </body>
 </html>
