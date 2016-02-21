@@ -1,13 +1,82 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <link href="./style.css" rel="stylesheet" type="text/css">
-    <script>
-      
-    </script>
-  </head>
-  <body style="padding:10px;">
-    <a href="https://github.com/shanedrgn/shanedrgn.github.io.git" target="_blank"><div class="f_btn b m">GITHUB</div></a>
-    <a href="./genprog.html" target="_blank"><div class="f_btn g m">GenProg</div></a>
-    <a href="./canvasphysics.html" target="_blank"><div class="f_btn b m">Canvas</div></a>
-  </body>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#burgmenu").click(function(){
+      $("#slidemenu").css("transform","translateX(0%)");
+    });
+    $("#closeslide").click(function(){
+      $("#slidemenu").css("transform","translateX(100%)");
+    });
+  });
+  </script>
+  <style type="text/css">
+  html
+  {
+    font-family: Candara;
+  }
+  body
+  {
+    margin:0px;
+    background-color: #8AD6DB;
+  }
+  #header
+  {
+    background-color: #207D7F;
+    color: white;
+    box-shadow: 0px 1px 10px #222;
+  }
+  #header > #headTitle
+  {
+    font-size:22px;
+    padding: 10px;
+    display: inline-block;
+  }
+  #header > #nav
+  {
+    display: inline-block;
+    float: right;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    font-size: 22px;
+  }
+  #header > #nav > li
+  {
+    padding: 10px;
+  }
+  #slidemenu
+  {
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.25);
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    right: 0%;
+    transition: 1s all;
+    transform: translateX(100%);
+    background-color:#71CAD0;
+    box-sizing: border-box;
+    color:white;
+    z-index:10
+  }
+  </style>
+</head>
+<body>
+<div id="slidemenu" style="">
+    <i id="closeslide" style="display: block;text-align: right;padding:10px;background-color:#226F71;" class="fa fa-times-circle-o"></i>
+    <div style="padding:10px;">Stuff</div>
+    <div style="padding:10px;">Lorem Ipsum</div>
+</div>
+<header id="header">
+  <t id="headTitle">Web Dev</t>
+  <ul id="nav">
+    <li id="burgmenu"><i style="letter-spacing:0;" class="fa fa-bars"></i></li>
+  </ul>
+</header>
+
+</body>
 </html>
