@@ -18,18 +18,21 @@
   <style type="text/css">
   html
   {
+    height: 100%;
     font-family: Century Gothic, sans-serif;;
   }
   body
   {
+    height: 100%;
     margin:0px;
     background-color: #BEEAEC;
+    height: 100%;
   }
   #header
   {
     background-color: #207D7F;
     color: white;
-    box-shadow: 0px 1px 10px #222;
+    box-shadow: 0px 1px 10px rgba(0,0,0,0.5);
     margin-bottom:10px;
   }
   #header > #headTitle
@@ -65,6 +68,32 @@
     color:white;
     z-index:10
   }
+  .panel
+  {
+    background-color: #FFF;
+    display: inline-block;
+    width: 260px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.15);
+    margin: 20px;
+  }
+  .panel > name
+  {
+    display: block;
+    color:white;
+    padding: 5px;
+    font-size: 18px
+  }
+  .panel.g > name
+  {
+    background-color: #0ECE9C;
+  }
+  .panel > desc
+  {
+    text-align: center;
+    padding:5px;
+    font-size: 16px;
+    display: block;
+  }
   </style>
 </head>
 <body>
@@ -79,5 +108,9 @@
     <li id="burgmenu"><i style="letter-spacing:0;" class="fa fa-bars"></i></li>
   </ul>
 </header>
+<div class="panel g">
+  <name>Canvas</name>
+  <desc>This is a thingy that does a thingy with javascript.</desc>
+</div>
 </body>
 </html>
