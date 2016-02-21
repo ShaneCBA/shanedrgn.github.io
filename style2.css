@@ -1,0 +1,76 @@
+body
+{
+  background-color: #EEEEEE;
+  font-family: 'Segoe UI',sans-serif;
+  margin: 0px;
+}
+.btn, .f_btn
+{
+  font-family: helvetica;
+  color: #FFFFFF;
+  display: inline-block;
+  margin:3px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.btn.s,.f_btn.s
+{
+  padding: 8px 16px;
+  font-size: 15px;
+}
+.btn.m,.f_btn.m
+{
+  padding: 12px 24px;
+  font-size: 18px;
+}
+.btn.l,.f_btn.l
+{
+  padding: 20px 32px;
+  font-size: 27px;
+}
+
+.f_btn.r
+{
+  background-color: hsla(0, 100%, 46%, 1);
+}
+.f_btn.g
+{
+  background-color: hsla(152, 100%, 38%, 1);
+}
+
+.f_btn.b
+{
+  background-color: hsla(204, 100%, 38%, 1);
+}
+
+.f_btn
+{
+  transform: translateY(-3px);
+}
+
+.f_btn.r{
+  box-shadow: 0px 3px 0px hsla(0, 100%, 38%, 1);
+}
+.f_btn.g{
+  box-shadow: 0px 3px 0px hsla(152, 100%, 30%, 1);
+}
+.f_btn.b{
+  box-shadow: 0px 3px 0px hsla(204, 100%, 30%, 1);
+}
+
+.f_btn.r:active{
+  box-shadow: 0px 0px 0px hsla(0, 100%, 38%, 1);
+}
+.f_btn.g:active{
+  box-shadow: 0px 0px 0px hsla(152, 100%, 30%, 1);
+}
+.f_btn.b:active{
+  box-shadow: 0px 0px 0px hsla(204, 100%, 30%, 1);
+}
+
+.f_btn:active
+{
+  transform: translateY(0);
+}
