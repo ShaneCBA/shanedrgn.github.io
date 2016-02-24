@@ -25,15 +25,16 @@
   {
     height: 100%;
     margin:0px;
-    background-color: #B2DFDB;
+    background-color: hsla(158,100%,91%,1);
     height: 100%;
   }
   #header
   {
-    background-color: #207D7F;
+    background-color: hsla(158,59%,57%,1);
     color: white;
     box-shadow: 0px 1px 10px rgba(0,0,0,0.5);
-    margin-bottom:10px;
+    border-bottom: 3px solid hsl(158, 74%, 69%);
+    margin-bottom: 10px;
   }
   #header > #headTitle
   {
@@ -63,17 +64,24 @@
     right: 0%;
     transition: .5s all;
     transform: translateX(100%);
-    background-color:#9BCCC7;
+    background-color: hsl(158, 66%, 67%);
     box-sizing: border-box;
     color:white;
     z-index:10
+  }
+  #slidemenu > #closeslide
+  {
+    display: block;
+    text-align: right;
+    padding:10px;
+    background-color: hsl(158, 32%, 52%);
   }
   .panel
   {
     background-color: #FFF;
     display: inline-block;
     width: 230px;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.25);
     margin: 20px;
   }
   .panel > name
@@ -85,12 +93,17 @@
   }
   .panel.g > name/*AD4545*/
   {
-    background-color: #0ECE9C;
+    background-color: hsl(163, 59%, 56%);
     text-align: center;
   }
   .panel.r > name/*AD4545*/
   {
-    background-color: #AD4545;
+    background-color: hsl(0, 68%, 65%);
+    text-align: center;
+  }
+  .panel.b > name/*AD4545*/
+  {
+    background-color: hsl(191, 73%, 49%);
     text-align: center;
   }
   .panel > desc
@@ -99,12 +112,12 @@
     padding:5px;
     font-size: 16px;
     display: block;
-  }
+  }/*hsl(191, 73%, 49%)*/
   </style>
 </head>
 <body>
 <div id="slidemenu" style="">
-    <i id="closeslide" style="display: block;text-align: right;padding:10px;background-color:#226F71;" class="fa fa-times-circle-o"></i>
+    <i id="closeslide" class="fa fa-times-circle-o"></i>
     <div style="padding:10px;">Stuff</div>
     <div style="padding:10px;">Lorem Ipsum</div>
 </div>
@@ -114,9 +127,19 @@
     <li id="burgmenu"><i style="letter-spacing:0;" class="fa fa-bars"></i></li>
   </ul>
 </header>
-<div class="panel r">
-  <name>Example</name>
-  <desc>This is an example of a panel for the home page of this github repo</desc>
+<div style="text-align: center;">
+  <div class="panel r">
+    <name>Example</name>
+    <desc>This is an example of a panel for the home page of this github repo</desc>
+  </div>
+  <div class="panel g">
+    <name>Example</name>
+    <desc>This is an example of a panel for the home page of this github repo</desc>
+  </div>
+  <div class="panel b">
+    <name>Example</name>
+    <desc>This is an example of a panel for the home page of this github repo</desc>
+  </div>
 </div>
 </body>
 </html>
