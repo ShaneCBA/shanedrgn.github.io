@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trump or Hitler</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  <script type="text/javascript">
+    var options = {
+      'hitler':[
+      'Thank you, thank you. We\'re going to make *country_name great again, that I can tell you, believe me.',
+      'Anyone who sees and paints a sky green, and fields blue ought to be sterilized.',
+      'How fortunate for government that the people they administer don\'t think.',
+      'The more economic difficulties increase, the more immigration will be seen as a burden.',
+      'Great liars are also great magicians.',
+      'As a Christian I have no duty to allow myself to be cheated, but I have the duty to be a fighter for truth and justice.',
+	  'The winner will never be asked if he told the truth.',
+	  'Strength lies not in defense but in attack.',
+	  'Humanitarianism is the ideas of idiots and cowards.'
+      ],
+      'trump':[
+      'Be so big, so strong, so powerful, nobody is going to mess with us.',
+      'I think apologizing\'s a great thing, but you have to be wrong. I will absolutely apologize, sometime in the hopefully distant future, if I\'m ever wrong.',
+      'As has been stated continuously ... people are pouring across our borders unabated .. This must be stoped and it must be stopped now.',
+      'Sometimes by losing a battle you find a new way to win the war.',
+      'With out passion, you don\'t have energy, with out energy you have nothing.',
+      'When somebody challenges you, fight back. Be brutal, be tough.',
+	  'In the end, you\'re measured not by how much you undertake but by what you finally accomplish'
+      ]
+    };
+    var quote;
+    var person;
+    var hasPicked;
+    function generateQuestion()
+    {
+      if (Math.random()*2 > 1)
+      {
+        quote = options['trump'][Object.keys(options['trump'])[Object.keys(options['trump']).length * Math.random() << 0]]
+        person = 'trump';
+      }
+      else
+      {
+        quote = options['hitler'][Object.keys(options['hitler'])[Object.keys(options['hitler']).length * Math.random() << 0]]
+        person = 'hitler';
+      }
+      return quote;
+    }
+    function choose(choice,elem)
+    {
+      if (hasPicked != true)
+      {
+        hasPicked = true;
+        document.getElementById('retry').style.display = "initial";
+        if (choice == person)
+        {
+          elem.style.color = "#00FF00";
+          document.getElementById('retry').style.background = "#22DD22";
+          document.getElementById('retry').innerHTML = "Correct!";
+          return true;
+        }
+        elem.style.color = "#999999";
+        document.getElementById('retry').style.background = "#555555";
+        return false;
+        }
+    }
+    function start(){
+      document.getElementById('quote').innerHTML = "\"" + generateQuestion() + "\"";
+    }
+  </script>
+</head>
+<body>
+  <pHeader>
+  <span style="color:#4458B9;letter-spacing: 3px">Trump</span>
+  <span style="color: white;font-size: 19px;">or</span><span style="color: #E22222;letter-spacing: 3px"> Hitler</span>
+  </pHeader>
+  <div class="centered">
+    <div id="quote"></div><br/>
+    <choice onClick="choose('trump',this)" style="background: #4458B9;">Trump</choice>
+    <choice onClick="choose('hitler',this)" style="background: #E22222;">Hitler</choice>
+    <br/><br/>
+    <choice id="retry" onClick="location.reload();" style="background: #22DD22;display: none;">Try Again</choice>
+  </div>
+  <script type="text/javascript">start();</script>
+</body>
+</html>
