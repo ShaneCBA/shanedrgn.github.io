@@ -30,6 +30,9 @@ function debug(stuff){
     this.drawObjects = function(){
       self.clear()
       self.objects.forEach(function(obj,index){
+        if (typeof(obj.velX) !== 'undefined'){
+          obj.move(obj);
+        }
         self.objects[index].draw();
       });
       players.forEach(function(obj,index){
@@ -38,9 +41,9 @@ function debug(stuff){
     }
     this.moveObjects = function(){
       self.objects.forEach(function(obj){
-        if (typeof(obj.velX) !== 'undefined'){
-          obj.move(obj);
-        }
+        // if (typeof(obj.velX) !== 'undefined'){
+        //   obj.move(obj);
+        // }
       });
     }
     this.appendObject = function(newObject){
@@ -50,7 +53,7 @@ function debug(stuff){
     this.init();
   }
 
-  function Object(x,y,width,height,color){
+  function Object(x,y,width,height,color,type){
     self = this
     this.init = function() {
       this.x = parseFloat(x);
@@ -58,6 +61,7 @@ function debug(stuff){
       this.height = height;
       this.width = width;
       this.color = color;
+      this.type = typeof type == "undefined" ? "nuetral":type;
     }
     this.draw = function(ctx){
       ctx = world.context;
@@ -114,34 +118,44 @@ function debug(stuff){
           var xOrig = s.x
           var yOrig = s.y
           if(s.isTouching(s,obj)){
-            while (s.isTouching(s,obj)){
-              s.x +=
-              xChangePos ++
-            }
-            s.x = xOrig
-            while (s.isTouching(s,obj)){
-              s.x --
-              xChangeNeg --
-            }
-            s.x = xOrig
-            xChange = Math.abs(xChangeNeg) > xChangePos ? xChangePos : xChangeNeg;
 
-            while (s.isTouching(s,obj)){
-              s.y ++
-              yChangePos ++
-            }
-            s.y = yOrig
-            while (s.isTouching(s,obj)){
-              s.y --
-              yChangeNeg --
-            }
-            s.y = yOrig
-            yChange = Math.abs(yChangeNeg) > yChangePos ? yChangePos : yChangeNeg;
-            if (Math.abs(yChange) > Math.abs(xChange)){
-              s.x += xChange
+            if (obj.type === "enemy") {
+              s.x = 0;
+              s.y = 0;
+              debug (obj.type);
             }
             else {
-              s.y += yChange
+              while (s.isTouching(s,obj)){
+                s.x +=
+                xChangePos ++
+              }
+              s.x = xOrig
+              while (s.isTouching(s,obj)){
+                s.x --
+                xChangeNeg --
+              }
+              s.x = xOrig
+              xChange = Math.abs(xChangeNeg) > xChangePos ? xChangePos : xChangeNeg;
+
+              while (s.isTouching(s,obj)){
+                s.y ++
+                yChangePos ++
+              }
+              s.y = yOrig
+              while (s.isTouching(s,obj)){
+                s.y --
+                yChangeNeg --
+              }
+              s.y = yOrig
+              yChange = Math.abs(yChangeNeg) > yChangePos ? yChangePos : yChangeNeg;
+              if (Math.abs(yChange) > Math.abs(xChange)){
+                s.x += xChange
+              }
+              else {
+                s.y += yChange
+                s.velY = 0;
+                s.canJump=true;
+              }
             }
           }
           client = s;
@@ -164,10 +178,14 @@ function debug(stuff){
       this.width = width;
       this.color = color;
       this.dead = 0;
+      this.canJump = false;
     }
     this.testKeys = function(){
       if (keyState[87]){
-        self.velY = -self.speed;
+        if (self.canJump == true){
+          self.velY = -3;//-self.speed;
+          self.canJump = false;
+        } 
       }
       if (keyState[83]){
         self.velY = self.speed;
@@ -184,8 +202,9 @@ function debug(stuff){
       }
 
       if (self.velY != 0){
-        self.velY = ((self.velY - .1*(Math.abs(self.velY)/self.velY)).toFixed(1))/1
+        //self.velY = ((self.velY - .1*(Math.abs(self.velY)/self.velY)).toFixed(1))/1
       }
+      self.velY += 0.1;
 
     }
     this.init(); 
@@ -196,17 +215,12 @@ function debug(stuff){
 function sendPlayerData(x,y,name,game,player){
   var send = "?x="+x+"&y="+y+"&name="+name;
   $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send,dataType:"jsonp",success:function(data, status){
-    players = [];console.log("data");
+    players = [];
     for (var playerNum = 0; playerNum < data.players.length; playerNum ++){
       if (data.players[playerNum].sessionid != data.session){
-        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,30,30,"#D490A3");
+        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,30,30,"#D490A3","enemy");
         if (players[playerNum].isTouching(players[playerNum],client)){
-          if ((players[playerNum].y+players[playerNum].height)>client.y)
-          {
-            debug((players[playerNum].y+players[playerNum].height)-client.y)
-            client.x = 10;
-            client.y = 10;
-          }
+
         }
       }
     }
