@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Second Canvas Engine</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script type="text/javascript" src="game2.js"></script>
+  <style type="text/css">
+  *{
+    font-family: Arial;
+  }
+  </style>
+</head>
+<body>
+<canvas id="game" width="600" height="300" style="border:1px solid;"></canvas>
+<br><br>
+Debug:<br/>
+<textarea id="debug" style="width: 600px; height: 150px;"></textarea>
+<script type="text/javascript">
+  function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+
+  if (getCookie('userId') == null){
+    var date = new Date();
+    date.setTime(+ date + (12 * 86400000));
+    //window.document.cookies = "userId="+Math.random().toString(36).substring(7)+"; expires=Wed, 01 Jan 2017 00:00:01 GMT; path=/";
+  }
+  var asdf = "ayy";
+  var world = new World("game");
+  world.start();
+  var player = world.appendObject(new Player(10,10,30,30,"#ABCDEF",1))
+  world.appendObject(new Obstacle(270,90,30,120,"#EEEEEE"))
+  var movement = setInterval(player.testKeys,10);
+  setInterval(function(){sendPlayerData(player.x,player.y,"bob",world);},750)
+  </script>
+</body>
+</html>
