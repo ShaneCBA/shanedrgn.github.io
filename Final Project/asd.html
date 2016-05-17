@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Second Canvas Engine</title>
+  <script type="text/javascript" src="game2.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <style type="text/css">
+  *{
+    font-family: Arial;
+  }
+</style>
+</style>
+</head>
+<body>
+<canvas id="game" width="600" height="300" style="border:1px solid;"></canvas>
+<br><br>
+Debug:<br/>
+<textarea id="debug" style="width: 600px; height: 150px;"></textarea>
+<script type="text/javascript">
+  function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+
+  if (typeof document.cookies == "undefined"){
+    document.cookies = "userId="+Math.random().toString(36).substring(7)+;
+  }
+  var asdf = "ayy";
+  var world = new World("game");
+  world.start();
+  var player = world.appendObject(new Player(10,10,30,30,"#ABCDEF",1))
+  world.appendObject(new Obstacle(270,90,30,120,"#EEEEEE"))
+  var movement = setInterval(player.testKeys,10);
+  $(document).ready(function(){
+    $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php?"+getCookie("userId"),success:function(data, status){
+        $("#debug").html(data);
+    }});
+  });
+  </script>
+</body>
+
+
+</html>
