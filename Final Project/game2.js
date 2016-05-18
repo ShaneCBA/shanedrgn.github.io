@@ -231,8 +231,8 @@ function debug(stuff){
 
 function sendPlayerData(x,y,name,game,player){
   var send = "?x="+x+"&y="+y+"&name="+name;
-  var add = +(ajaxGet = "" ? "":"?killed="+ajaxGet)
-  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send,dataType:"jsonp",success:function(data, status){
+  var add = +(ajaxGet = "" ? "":"&killed="+ajaxGet)
+  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send+add,dataType:"jsonp",success:function(data, status){
     players = [];
     cDead = 0;
     console.log(data.dead);
