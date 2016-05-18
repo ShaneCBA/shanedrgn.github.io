@@ -237,7 +237,7 @@ function sendPlayerData(x,y,name,game,player){
     console.log(data.dead);
     for (var playerNum = 0; playerNum < data.players.length; playerNum ++){
       if (data.players[playerNum].sessionid != data.session){
-        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,30,30,"#D490A3","enemy",data.players[playerNum].sessionid);
+        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,20,20,"#D490A3","enemy",data.players[playerNum].sessionid);
       }
     }
     return data;
