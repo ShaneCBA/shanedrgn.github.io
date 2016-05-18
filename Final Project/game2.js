@@ -4,7 +4,7 @@ var playerX;
 var playerY;
 var client;
 var cDead = 0;
-var ajaxGet;
+var ajaxGet = "";
 function debug(stuff){
   document.getElementById("debug").value += stuff+"\n"
   document.getElementById("debug").scrollTop = document.getElementById("debug").scrollHeight
@@ -231,7 +231,8 @@ function debug(stuff){
 
 function sendPlayerData(x,y,name,game,player){
   var send = "?x="+x+"&y="+y+"&name="+name;
-  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send+(ajaxGet = "" ? "":"?killed="+ajaxGet),dataType:"jsonp",success:function(data, status){
+  var add = +(ajaxGet = "" ? "":"?killed="+ajaxGet)
+  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send,dataType:"jsonp",success:function(data, status){
     players = [];
     cDead = 0;
     console.log(data.dead);
