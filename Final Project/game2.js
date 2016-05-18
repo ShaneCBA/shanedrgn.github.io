@@ -130,7 +130,7 @@ function debug(stuff){
 
             if (obj.type === "enemy") {
               if (s.x+s.height>obj.x && s.x < obj.x){
-                s.velY *= -1
+                s.velY *= -1;
                 ajaxGet = obj.name;
               }
               else
@@ -231,7 +231,7 @@ function debug(stuff){
 
 function sendPlayerData(x,y,name,game,player){
   var send = "?x="+x+"&y="+y+"&name="+name;
-  var add = +(ajaxGet = "" ? "":"&killed="+ajaxGet)
+  var add = (ajaxGet = "" ? "":"&killed="+ajaxGet)
   $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send+add,dataType:"jsonp",success:function(data, status){
     players = [];
     cDead = 0;
