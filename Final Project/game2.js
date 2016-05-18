@@ -200,7 +200,7 @@ function debug(stuff){
     this.testKeys = function(){
       if (keyState[87]){
         if (self.canJump == true){
-          self.velY = -3;//-self.speed;
+          self.velY = -2;//-self.speed;
           self.canJump = false;
         } 
       }
