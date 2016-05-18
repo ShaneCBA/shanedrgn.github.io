@@ -31,8 +31,9 @@ Debug:<br/>
   var asdf = "ayy";
   var world = new World("game");
   world.start();
-  var player = world.appendObject(new Player(10,10,30,30,"#ABCDEF",1))
-  world.appendObject(new Obstacle(270,90,30,120,"#EEEEEE"))
+  var player = world.appendObject(new Player(10,10,20,20,"#ABCDEF",1))
+  world.appendObject(new Obstacle(300,90,30,120,"#EEEEEE"))
+  world.appendObject(new Obstacle(240,90,30,120,"#EEEEEE"))
   world.appendObject(new Obstacle(0,300-30,600,30,"#D490D2"))
   var movement = setInterval(player.testKeys,10);
   setInterval(function(){sendPlayerData(player.x,player.y,"bob",world);},100)
