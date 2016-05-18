@@ -3,6 +3,8 @@ var players = new Array;
 var playerX;
 var playerY;
 var client;
+var cDead = 0;
+var ajaxGet;
 function debug(stuff){
   document.getElementById("debug").value += stuff+"\n"
   document.getElementById("debug").scrollTop = document.getElementById("debug").scrollHeight
@@ -53,7 +55,7 @@ function debug(stuff){
     this.init();
   }
 
-  function Object(x,y,width,height,color,type){
+  function Object(x,y,width,height,color,type,name){
     self = this
     this.init = function() {
       this.x = parseFloat(x);
@@ -62,6 +64,7 @@ function debug(stuff){
       this.width = width;
       this.color = color;
       this.type = typeof type == "undefined" ? "nuetral":type;
+      this.name = typeof name == "undefined" ? "NULL":name
     }
     this.draw = function(ctx){
       ctx = world.context;
@@ -105,7 +108,13 @@ function debug(stuff){
       this.color = color;
     }
     this.move = function(s) {
-      world.objects.forEach(function(obj){
+      if (cDead == 1){
+        cDead = 0;
+        s.x = 270;
+        s.y = 0;
+        debug ("You ded");
+      }
+      world.objects.concat(players).forEach(function(obj){
       s.x = s.x + s.velX
       s.y =  s.y + s.velY 
         if (!(obj instanceof Player)) {
@@ -120,9 +129,17 @@ function debug(stuff){
           if(s.isTouching(s,obj)){
 
             if (obj.type === "enemy") {
-              s.x = 0;
-              s.y = 0;
-              debug (obj.type);
+              if (s.x+s.height>obj.x && s.x < obj.x){
+                s.velY *= -1
+                ajaxGet = obj.name;
+              }
+              else
+              {
+                debug("You died");
+                s.x = 270;
+                s.y = 0;
+                s.canJump = false;
+              }
             }
             else {
               while (s.isTouching(s,obj)){
@@ -214,14 +231,13 @@ function debug(stuff){
 
 function sendPlayerData(x,y,name,game,player){
   var send = "?x="+x+"&y="+y+"&name="+name;
-  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send,dataType:"jsonp",success:function(data, status){
+  $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send+(ajaxGet = "" ? "":"?killed="+ajaxGet),dataType:"jsonp",success:function(data, status){
     players = [];
+    cDead = 0;
+    console.log(data.dead);
     for (var playerNum = 0; playerNum < data.players.length; playerNum ++){
       if (data.players[playerNum].sessionid != data.session){
-        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,30,30,"#D490A3","enemy");
-        if (players[playerNum].isTouching(players[playerNum],client)){
-
-        }
+        players[playerNum] = new Object(data.players[playerNum].xpos,data.players[playerNum].ypos,30,30,"#D490A3","enemy",data.players[playerNum].sessionid);
       }
     }
     return data;
