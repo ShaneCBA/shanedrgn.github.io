@@ -234,7 +234,6 @@ function sendPlayerData(x,y,name,game,player){
   var add = (ajaxGet = "" ? "":"&killed="+ajaxGet)
   $.ajax({url:"https://cse-www.pltw.org/~rsanjpzy/final_game.php"+send+add,dataType:"jsonp",success:function(data, status){
     players = [];
-    cDead = 0;
     console.log(data.dead);
     for (var playerNum = 0; playerNum < data.players.length; playerNum ++){
       if (data.players[playerNum].sessionid != data.session){
