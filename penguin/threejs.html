@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Three.js</title>
+  </head>
+  <body>
+    <script src="./three.js-master/build/three.min.js"></script>
+    <script>
+      var mouse = {x:0,y:0}
+
+      var fov = 60;
+
+      var size = {w:640,h:320}
+      var scene = new THREE.Scene();
+      var aspect = size.w / size.h;
+      var camera = new THREE.PerspectiveCamera( fov, aspect, 0.1, 1000 );
+      var dispW = (Math.sin(fov/2*Math.PI/180)*camera.near)/Math.sin(90-(fov/2)*Math.PI/180)*2;
+      var renderer = new THREE.WebGLRenderer();
+      renderer.domElement.addEventListener('mousemove', function(event){
+        mouse.x = (event.clientX - event.target.clientWidth/2 - event.target.getBoundingClientRect().left);
+        mouse.y = -(event.clientY - event.target.clientHeight/2 - event.target.getBoundingClientRect().top);
+      })
+
+      renderer.setSize( size.w, size.h );
+
+      document.body.appendChild( renderer.domElement );
+
+
+      var loader = new THREE.JSONLoader();
+      var mesh;
+      var material;
+      loader.load("pegnin.js", function(geometry, materials){
+        material = new THREE.MeshPhongMaterial( {
+          color: 0xff0000,
+          polygonOffset: true,
+          polygonOffsetFactor: 1, // positive value pushes polygon further away
+          polygonOffsetUnits: 1
+        });
+        material.depthTest = true;
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+      });
+      
+      var pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+      scene.add( pointLight );
+
+
+      var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+      scene.add( light );
+      scene.add( light );
+
+      camera.position.z = 5;
+      var render = function () {
+        requestAnimationFrame( render );
+
+        mesh.position.z = -25;
+
+        var tempPlaneH = Math.tan(fov/2*Math.PI/180)*Math.abs(mesh.position.z-camera.position.z);
+        var tempPlaneW = tempPlaneH * aspect;
+        mesh.position.y = tempPlaneH*(mouse.y/(size.h/2));
+        mesh.position.x = tempPlaneW*(mouse.x/(size.w/2));
+        mesh.rotation.y += .01;
+
+        renderer.render( scene, camera );
+      }; 
+
+      render();
+    </script>
+  </body>
+</html>
